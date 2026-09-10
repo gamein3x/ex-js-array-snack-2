@@ -110,5 +110,19 @@ const ages = authors.map(a => a.age);
 const agesSum = ages.reduce(((acc, a) => acc + a),0);
 const agesMed = agesSum/ages.length;
 
-console.log(agesMed);
+// console.log(agesMed);
 
+/* Usando la l'API http://localhost:3333/books/{id} usa la combinazione di .map() e Promise.all(),
+    per creare una funzione (getBooks) che a partire da un array di id (ids),
+    ritorna una promise che risolve un array di libri (books).
+Testala con l’array [2, 13, 7, 21, 19] . */
+
+const randoNumbers = [2, 13, 7, 21, 19];
+
+async function getBooks(ids) {
+    const bookIds = ids.map(id => fetch(`http://localhost:3333/books/${id}`).then(r => r.json()));
+    const promise = await Promise.all(bookIds);
+    return promise;
+}
+
+getBooks(randoNumbers).then(r => console.log(r));
